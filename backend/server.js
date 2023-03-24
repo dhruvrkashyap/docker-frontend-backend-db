@@ -3,11 +3,12 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 const port = 3001;
 const routes = require("./routes");
+const mongo_path = process.env.MONGO_URI
 
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongo_path", {
+  await mongoose.connect("${mongo_path}", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
