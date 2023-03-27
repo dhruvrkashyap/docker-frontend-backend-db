@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const cors = require('cors');
 const mongoose = require("mongoose");
@@ -8,7 +9,7 @@ const mongo_path = process.env.MONGO_URI
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_URI, {
+  await mongoose.connect(mongo_path, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
