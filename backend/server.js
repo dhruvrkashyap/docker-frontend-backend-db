@@ -8,7 +8,7 @@ const mongo_path = process.env.MONGO_URI
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("${mongo_path}", {
+  await mongoose.connect('process.env.MONGO_URI', {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
@@ -18,6 +18,6 @@ async function main() {
   app.use("/api", routes);
 
   app.listen(port, () => {
-    console.log(`Server is listening on port: ${port}`);
+    console.log('Server is listening on port: ${port}');
   });
 }
