@@ -17,6 +17,9 @@ spec:
       containers:
       - name: frontend
         image: dhruvrkashyap/frontend
+        env:
+        - name: REACT_APP_API_URL
+          value: "http://34.93.192.146:3001/api"
         ports:
         - containerPort: 3000
 
