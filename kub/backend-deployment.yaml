@@ -19,7 +19,7 @@ spec:
         image: dhruvrkashyap/backend
         env:
         - name: MONGO_URI
-          value: "mongodb+srv://dhruv:dhruv12345@mongo.vbmpndm.mongodb.net/retryWrites=true&w=majority"
+          value: "mongodb://mongodb/todos"
         ports:
           - containerPort: 3001
 
