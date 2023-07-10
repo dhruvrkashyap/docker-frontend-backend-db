@@ -5,6 +5,7 @@ pipeline {
         CLUSTER_NAME = 'cluster'
         LOCATION = 'asia-south1-a'
         CREDENTIALS_ID = 'gcp'
+        DOCKERHUB_CREDENTIALS = credentials('docker')
     }
     stages {
         stage('clean workspace'){
@@ -14,7 +15,24 @@ pipeline {
         }
         stage('Git clone') {
             steps{
-                sh 'git clone https://github.com/dhruvrkashyap/docker-frontend-backend-db.git'
+                git branch: 'jenkins', credentialsId: 'git', url: 'https://github.com/dhruvrkashyap/docker-frontend-backend-db.git'
+                sh 'ls -a'
+                // sh 'git clone https://github.com/dhruvrkashyap/docker-frontend-backend-db.git'
+            }
+        }
+        stage('Docker image build') {
+            steps{
+                sh '''cd backend && \
+                docker build -t dhruvrkashyap/backend:${BUILD_NUMBER} .
+                '''
+                sh '''cd frontend && \
+                docker build -t dhruvrkashyap/frontend:${BUILD_NUMBER} .
+                '''
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push dhruvrkashyap/frontend:${BUILD_NUMBER}'
+                sh 'docker push dhruvrkashyap/backend:${BUILD_NUMBER}'
+                sh 'docker rmi dhruvrkashyap/frontend:${BUILD_NUMBER}'
+                sh 'docker rmi dhruvrkashyap/backend:${BUILD_NUMBER}'
             }
         }
         stage('Deploy to GKE') {
@@ -37,8 +55,11 @@ pipeline {
                 // curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl" && \
                 // chmod +x ./kubectl && \
                 
-                
-                sh '''cd docker-frontend-backend-db/kub && \
+                sh """cd kub && \
+                sed -i 's/:latest/:${BUILD_NUMBER}/g' backend-deployment.yaml && \
+                sed -i 's/:latest/:${BUILD_NUMBER}/g' frontend-deployment.yaml
+                """
+                sh '''cd kub && \
                 ls -al && \
                 kubectl apply -f backend-deployment.yaml -n dhruv && \
                 kubectl apply -f frontend-deployment.yaml -n dhruv'''
