@@ -19,11 +19,11 @@
             imagePullPolicy: Always
             env: 
               - 
-                name: MONGO_INITDB_ROOT_USERNAME
+                name: MONGODB_INITDB_ROOT_USERNAME
                 value: "dhruv"
                 
               -
-                name: MONGO_INITDB_ROOT_PASSWORD
+                name: MONGODB_INITDB_ROOT_PASSWORD
                 value: "password"
                 
             ports: 
