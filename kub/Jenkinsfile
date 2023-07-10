@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    environment {
+        PROJECT_ID = 'outstanding-pen-389306'
+        CLUSTER_NAME = 'cluster'
+        LOCATION = 'asia-south1-a'
+        CREDENTIALS_ID = 'gcp'
+    }
+    stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Git clone') {
+            steps{
+                sh 'git clone https://github.com/dhruvrkashyap/docker-frontend-backend-db.git'
+            }
+        }
+        stage('Deploy to GKE') {
+            steps{
+                withKubeConfig([credentialsId: env.CREDENTIALS_ID,
+                    serverUrl: 'https://172.16.0.2',
+                    clusterName: env.CLUSTER_NAME,
+                    namespace: env.NAMESPACE
+                    ]){
+                // sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
+                // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, 
+                // clusterName: env.CLUSTER_NAME, location: env.LOCATION, 
+                // manifestPattern: 'docker-frontend-backend-db/kub/backend-deployment.yaml', credentialsId: env.CREDENTIALS_ID, 
+                // verifyDeployments: true])
+                
+                // step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, 
+                // clusterName: env.CLUSTER_NAME, location: env.LOCATION, 
+                // manifestPattern: 'docker-frontend-backend-db/kub/frontend-deployment.yaml', credentialsId: env.CREDENTIALS_ID, 
+                // verifyDeployments: true])
+                // curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl" && \
+                // chmod +x ./kubectl && \
+                
+                
+                sh '''cd docker-frontend-backend-db/kub && \
+                ls -al && \
+                kubectl apply -f backend-deployment.yaml -n dhruv && \
+                kubectl apply -f frontend-deployment.yaml -n dhruv'''
+                }
+            }
+        }
+    }
+}
