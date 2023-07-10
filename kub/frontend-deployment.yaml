@@ -19,7 +19,7 @@ spec:
         image: dhruvrkashyap/frontend
         env:
         - name: REACT_APP_API_URL
-          value: "http://34.93.192.146:3001/api"
+          value: "http://af4f790587d414645af49c4561b0ad6b-106430917.ap-south-1.elb.amazonaws.com:3001/api"
         ports:
         - containerPort: 3000
 

@@ -19,7 +19,7 @@ spec:
         image: dhruvrkashyap/backend
         env:
         - name: MONGO_URI
-          value: "mongodb://mongodb:27017/todos"
+          value: "mongodb://mongo:27017/todos"
         ports:
           - containerPort: 3001
 
