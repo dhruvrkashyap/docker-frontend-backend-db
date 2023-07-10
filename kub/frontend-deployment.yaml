@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: dhruvrkashyap/frontend
+        image: dhruvrkashyap/frontend:latest
         env:
         - name: REACT_APP_API_URL
           value: "http://34.93.192.146:3001/api"

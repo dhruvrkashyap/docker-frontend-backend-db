@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: dhruvrkashyap/backend
+        image: dhruvrkashyap/backend:latest
         env:
         - name: MONGO_URI
           value: "mongodb+srv://dhruv:dhruv12345@mongo.vbmpndm.mongodb.net/retryWrites=true&w=majority"
